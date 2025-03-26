@@ -31,7 +31,7 @@ CREATE TABLE Room (
 
 /*Skapar tabellen Booking*/
 CREATE TABLE Booking (
-	BookingID INT PRIMARY KEY AUTO_INCREMENT,
+    BookingID INT PRIMARY KEY AUTO_INCREMENT,
     GuestID INT NOT NULL,
     RoomID INT NOT NULL,
     CheckinDate DATE NOT NULL,
@@ -66,14 +66,14 @@ CREATE TABLE Payment (
         
 /*Skapar tabellen Service*/
 CREATE TABLE Service (
-		ServiceID INT PRIMARY KEY AUTO_INCREMENT,
+	ServiceID INT PRIMARY KEY AUTO_INCREMENT,
         ServiceName VARCHAR(50) NOT NULL,
         Price DECIMAL(10,2) NOT NULL
         );
         
 /*Skapar tabellen BookingService*/
 CREATE TABLE BookingService (
-		BkServiceID INT PRIMARY KEY AUTO_INCREMENT,
+	BkServiceID INT PRIMARY KEY AUTO_INCREMENT,
         BookingID INT NOT NULL,
         ServiceID INT NOT NULL,
         Quantity INT NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE BookingService (
 
 /*Skapar tabellen BookingLog*/
 CREATE TABLE BookingLog (
-		LogID INT PRIMARY KEY AUTO_INCREMENT,
+	LogID INT PRIMARY KEY AUTO_INCREMENT,
         BookingID INT NOT NULL,
         Action VARCHAR(50) NOT NULL DEFAULT 'NEW',
         LogTime DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -100,9 +100,9 @@ INSERT INTO Guest (FirstName, LastName, Phone, Email) VALUES
 /*Infogar data i tabellen RoomType*/
 INSERT INTO RoomType (RoomName, Price) VALUES
 	('Enkelrum', 990),
-    ('Dubbelrum', 1590),
-    ('Deluxe Dubbelrum', 1995),
-    ('Premium Deluxe', 2990);
+	('Dubbelrum', 1590),
+	('Deluxe Dubbelrum', 1995),
+	('Premium Deluxe', 2990);
     
 /*Infogar data i tabellen Room*/
 INSERT INTO Room (RoomTypeID, RoomNumber) VALUES -- RoomStatus behöver ingen data då det är satt till default
@@ -122,15 +122,15 @@ INSERT INTO Booking (GuestID, RoomID, CheckinDate, CheckoutDate) VALUES
 	(3,5,'2025-07-14','2025-07-16'), -- RoomID 5 är Deluxe DUbbelrum med rumsnummer 301
 	(4,3,'2025-10-07','2025-10-08'), -- RoomID 3 är Dubbelrum med rumsnummer 201
 	(2,4,'2025-10-07','2025-10-08'), -- RoomID 4 är Dubbelrum med rumsnummer 202
-    (1,5,'2025-12-24','2025-12-27');
+	(1,5,'2025-12-24','2025-12-27');
 
     
 /*Infogar betalmetoder i tabellen PayMethod*/
 INSERT INTO PayMethod (MethodName) VALUES
 	('Kontanter'),
-    ('Kortbetalning'),
-    ('Swish'),
-    ('Faktura');
+	('Kortbetalning'),
+	('Swish'),
+	('Faktura');
     
 /*Infogar data i tabellen Payment*/
 INSERT INTO Payment (BookingID, PayMethodID, PaymentDate, Amount, PaymentStatus) VALUES
@@ -144,12 +144,12 @@ INSERT INTO Payment (BookingID, PayMethodID, PaymentDate, Amount, PaymentStatus)
 /*Infogar data i tabellen Service. Produkterna i hotellets minibar*/
 INSERT INTO Service (ServiceName, Price) VALUES
 	('Chips', 39),
-    ('Carlsberg', 69),
-    ('Jordnötter', 45);
+	('Carlsberg', 69),
+	('Jordnötter', 45);
     
 /*Infogar data i tabellen BookingService*/
 	INSERT INTO BookingService (BookingID, ServiceID, Quantity) VALUES
-		(1, 1, 1),
+	(1, 1, 1),
         (1, 2, 2);
         
 /*INNER JOIN för namn och rumsnummer*/
@@ -203,8 +203,7 @@ CREATE TRIGGER trg_bookinglog_insert
 AFTER INSERT ON Booking
 FOR EACH ROW
 BEGIN
-    INSERT INTO BookingLog (BookingID, Action)
-    VALUES (NEW.BookingID, 'NEW');
+INSERT INTO BookingLog (BookingID, Action)    VALUES (NEW.BookingID, 'NEW');
 END$$
 
 DELIMITER ;
@@ -216,8 +215,8 @@ CREATE TRIGGER trg_bookinglog_update
 AFTER UPDATE ON Booking
 FOR EACH ROW
 BEGIN
-    INSERT INTO BookingLog (BookingID, Action)
-    VALUES (NEW.BookingID, 'UPDATED');
+INSERT INTO BookingLog (BookingID, Action)
+VALUES (NEW.BookingID, 'UPDATED');
 END$$
 
 DELIMITER ;
