@@ -7,26 +7,26 @@ USE CarlsonHotel;
 /*Skapar tabellen Guest*/
 CREATE TABLE Guest (
 	GuestID INT PRIMARY KEY AUTO_INCREMENT,
-    FirstName VARCHAR(50) NOT NULL,
-    LastName VARCHAR(50) NOT NULL,
-    Phone VARCHAR(20) NOT NULL,
-    Email VARCHAR(100) UNIQUE NOT NULL
+	FirstName VARCHAR(50) NOT NULL,
+	LastName VARCHAR(50) NOT NULL,
+	Phone VARCHAR(20) NOT NULL,
+	Email VARCHAR(100) UNIQUE NOT NULL
     );
     
 /*Skapar tabellen RoomType*/
 CREATE TABLE RoomType (
 	RoomTypeID INT PRIMARY KEY AUTO_INCREMENT,
-    RoomName VARCHAR(50) NOT NULL,
-    Price DECIMAL(10,2) NOT NULL
+	RoomName VARCHAR(50) NOT NULL,
+	Price DECIMAL(10,2) NOT NULL
     );
 
 /*Skapar tabellen Room*/
 CREATE TABLE Room (
 	RoomID INT PRIMARY KEY AUTO_INCREMENT,
-    RoomTypeID INT NOT NULL,
-    RoomNumber VARCHAR(10) UNIQUE NOT NULL,
-    RoomStatus ENUM('Available', 'Occupied') NOT NULL DEFAULT 'Available', -- Sätter rumsstatusen till default tillgängligt
-    FOREIGN KEY (RoomTypeID) REFERENCES RoomType(RoomTypeID)
+	RoomTypeID INT NOT NULL,
+	RoomNumber VARCHAR(10) UNIQUE NOT NULL,
+	RoomStatus ENUM('Available', 'Occupied') NOT NULL DEFAULT 'Available', -- Sätter rumsstatusen till default tillgängligt
+	FOREIGN KEY (RoomTypeID) REFERENCES RoomType(RoomTypeID)
     );
 
 /*Skapar tabellen Booking*/
@@ -48,8 +48,8 @@ CHECK (CheckoutDate > CheckinDate); -- Utcheckning ska vara större än incheckn
     
 /*Skapar tabellen PayMethod*/
 CREATE TABLE PayMethod (
-		PayMethodID INT PRIMARY KEY AUTO_INCREMENT,
-		MethodName VARCHAR(50) NOT NULL
+	PayMethodID INT PRIMARY KEY AUTO_INCREMENT,
+	MethodName VARCHAR(50) NOT NULL
         );
     
 /*SKapar tabellen Payment*/
