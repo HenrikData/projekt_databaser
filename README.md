@@ -1,6 +1,7 @@
 # projekt_databaser
 
 Projektnamn: Carlson Hotel.
+
 Skapad av Henrik Karlsson och Mattias Karlsson.
 
 Databasen är döpt till Carlson Hotel för syftet att hantera data för gästinformation, bokningar av rum, tilläggstjänster, betalningar samt loggning av bokningshändelser.
