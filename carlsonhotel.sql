@@ -1,5 +1,3 @@
-/*Databasen är skapad av Henrik Karlsson och Mattias Karlsson*/
-
 /*Skapar databasen CarlsonHotel*/
 CREATE DATABASE CarlsonHotel;
 USE CarlsonHotel;
@@ -7,31 +5,31 @@ USE CarlsonHotel;
 /*Skapar tabellen Guest*/
 CREATE TABLE Guest (
 	GuestID INT PRIMARY KEY AUTO_INCREMENT,
-	FirstName VARCHAR(50) NOT NULL,
-	LastName VARCHAR(50) NOT NULL,
-	Phone VARCHAR(20) NOT NULL,
-	Email VARCHAR(100) UNIQUE NOT NULL
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    Phone VARCHAR(20) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL
     );
     
 /*Skapar tabellen RoomType*/
 CREATE TABLE RoomType (
 	RoomTypeID INT PRIMARY KEY AUTO_INCREMENT,
-	RoomName VARCHAR(50) NOT NULL,
-	Price DECIMAL(10,2) NOT NULL
+    RoomName VARCHAR(50) NOT NULL,
+    Price DECIMAL(10,2) NOT NULL
     );
 
 /*Skapar tabellen Room*/
 CREATE TABLE Room (
 	RoomID INT PRIMARY KEY AUTO_INCREMENT,
-	RoomTypeID INT NOT NULL,
-	RoomNumber VARCHAR(10) UNIQUE NOT NULL,
-	RoomStatus ENUM('Available', 'Occupied') NOT NULL DEFAULT 'Available', -- Sätter rumsstatusen till default tillgängligt
-	FOREIGN KEY (RoomTypeID) REFERENCES RoomType(RoomTypeID)
+    RoomTypeID INT NOT NULL,
+    RoomNumber VARCHAR(10) UNIQUE NOT NULL,
+    RoomStatus ENUM('Available', 'Occupied') NOT NULL DEFAULT 'Available', -- Sätter rumsstatusen till default tillgängligt
+    FOREIGN KEY (RoomTypeID) REFERENCES RoomType(RoomTypeID)
     );
 
 /*Skapar tabellen Booking*/
 CREATE TABLE Booking (
-    BookingID INT PRIMARY KEY AUTO_INCREMENT,
+	BookingID INT PRIMARY KEY AUTO_INCREMENT,
     GuestID INT NOT NULL,
     RoomID INT NOT NULL,
     CheckinDate DATE NOT NULL,
@@ -41,15 +39,15 @@ CREATE TABLE Booking (
     FOREIGN KEY (RoomID) REFERENCES Room(RoomID)
     ); 
     
-/*Lägg till en constraint i tabellen Booking*/
+-- Lägg till en constraint i tabellen Booking
 ALTER TABLE Booking
 ADD CONSTRAINT check_min_one_night
 CHECK (CheckoutDate > CheckinDate); -- Utcheckning ska vara större än incheckning
     
 /*Skapar tabellen PayMethod*/
 CREATE TABLE PayMethod (
-	PayMethodID INT PRIMARY KEY AUTO_INCREMENT,
-	MethodName VARCHAR(50) NOT NULL
+		PayMethodID INT PRIMARY KEY AUTO_INCREMENT,
+		MethodName VARCHAR(50) NOT NULL
         );
     
 /*SKapar tabellen Payment*/
@@ -66,14 +64,14 @@ CREATE TABLE Payment (
         
 /*Skapar tabellen Service*/
 CREATE TABLE Service (
-	ServiceID INT PRIMARY KEY AUTO_INCREMENT,
+		ServiceID INT PRIMARY KEY AUTO_INCREMENT,
         ServiceName VARCHAR(50) NOT NULL,
         Price DECIMAL(10,2) NOT NULL
         );
         
 /*Skapar tabellen BookingService*/
 CREATE TABLE BookingService (
-	BkServiceID INT PRIMARY KEY AUTO_INCREMENT,
+		BkServiceID INT PRIMARY KEY AUTO_INCREMENT,
         BookingID INT NOT NULL,
         ServiceID INT NOT NULL,
         Quantity INT NOT NULL,
@@ -82,8 +80,9 @@ CREATE TABLE BookingService (
         );
 
 /*Skapar tabellen BookingLog*/
+
 CREATE TABLE BookingLog (
-	LogID INT PRIMARY KEY AUTO_INCREMENT,
+		LogID INT PRIMARY KEY AUTO_INCREMENT,
         BookingID INT NOT NULL,
         Action VARCHAR(50) NOT NULL DEFAULT 'NEW',
         LogTime DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -100,9 +99,9 @@ INSERT INTO Guest (FirstName, LastName, Phone, Email) VALUES
 /*Infogar data i tabellen RoomType*/
 INSERT INTO RoomType (RoomName, Price) VALUES
 	('Enkelrum', 990),
-	('Dubbelrum', 1590),
-	('Deluxe Dubbelrum', 1995),
-	('Premium Deluxe', 2990);
+    ('Dubbelrum', 1590),
+    ('Deluxe Dubbelrum', 1995),
+    ('Premium Deluxe', 2990);
     
 /*Infogar data i tabellen Room*/
 INSERT INTO Room (RoomTypeID, RoomNumber) VALUES -- RoomStatus behöver ingen data då det är satt till default
@@ -122,15 +121,15 @@ INSERT INTO Booking (GuestID, RoomID, CheckinDate, CheckoutDate) VALUES
 	(3,5,'2025-07-14','2025-07-16'), -- RoomID 5 är Deluxe DUbbelrum med rumsnummer 301
 	(4,3,'2025-10-07','2025-10-08'), -- RoomID 3 är Dubbelrum med rumsnummer 201
 	(2,4,'2025-10-07','2025-10-08'), -- RoomID 4 är Dubbelrum med rumsnummer 202
-	(1,5,'2025-12-24','2025-12-27');
+    (1,5,'2025-12-24','2025-12-27');
 
     
 /*Infogar betalmetoder i tabellen PayMethod*/
 INSERT INTO PayMethod (MethodName) VALUES
 	('Kontanter'),
-	('Kortbetalning'),
-	('Swish'),
-	('Faktura');
+    ('Kortbetalning'),
+    ('Swish'),
+    ('Faktura');
     
 /*Infogar data i tabellen Payment*/
 INSERT INTO Payment (BookingID, PayMethodID, PaymentDate, Amount, PaymentStatus) VALUES
@@ -144,23 +143,13 @@ INSERT INTO Payment (BookingID, PayMethodID, PaymentDate, Amount, PaymentStatus)
 /*Infogar data i tabellen Service. Produkterna i hotellets minibar*/
 INSERT INTO Service (ServiceName, Price) VALUES
 	('Chips', 39),
-	('Carlsberg', 69),
-	('Jordnötter', 45);
+    ('Carlsberg', 69),
+    ('Jordnötter', 45);
     
 /*Infogar data i tabellen BookingService*/
 	INSERT INTO BookingService (BookingID, ServiceID, Quantity) VALUES
-	(1, 1, 1),
+		(1, 1, 1),
         (1, 2, 2);
-        
-/*INNER JOIN för namn och rumsnummer*/
-SELECT 
-Guest.FirstName, 
-Guest.LastName,
-Room.RoomNumber
-FROM Booking
-INNER JOIN Guest ON Booking.GuestID = Guest.GuestID
-INNER JOIN Room ON Booking.RoomID = Room.RoomID;
-
         
 /*Innerjoin för att se information om kunder och bokningsdetaljer*/      
 SELECT
@@ -203,7 +192,8 @@ CREATE TRIGGER trg_bookinglog_insert
 AFTER INSERT ON Booking
 FOR EACH ROW
 BEGIN
-INSERT INTO BookingLog (BookingID, Action)    VALUES (NEW.BookingID, 'NEW');
+    INSERT INTO BookingLog (BookingID, Action)
+    VALUES (NEW.BookingID, 'NEW');
 END$$
 
 DELIMITER ;
@@ -215,20 +205,11 @@ CREATE TRIGGER trg_bookinglog_update
 AFTER UPDATE ON Booking
 FOR EACH ROW
 BEGIN
-INSERT INTO BookingLog (BookingID, Action)
-VALUES (NEW.BookingID, 'UPDATED');
+    INSERT INTO BookingLog (BookingID, Action)
+    VALUES (NEW.BookingID, 'UPDATED');
 END$$
 
 DELIMITER ;
-
-/*Lägger till en transaction bokning för att testa bokningsloggen*/
-START TRANSACTION;  -- Börjar en transaktion
-INSERT INTO Booking (GuestID, RoomID, CheckinDate, CheckoutDate ) VALUES
-(4, 5, '2025-06-15', '2025-06-17');  -- Kund 4 bokar rumsnr 301
-
-COMMIT;  -- Spara ändringen permanent. OBS spara endast om ändringen är korrekt. Kan inte ångra om Comittat
-
-ROLLBACK;  -- Ångra ändringen.
 
 
 /*Lägg till bokning för att testa bokningsloggen*/
@@ -279,6 +260,12 @@ DELIMITER ;
 /*Anropa proceduren "Ankomstlista" med valfritt datum*/
 CALL GetBookingsByDate('2025-10-07');
 
+/*Skapa index för ankomstlista*/
+CREATE INDEX idx_checkin_date ON Booking(CheckinDate); 
+
+/*Visa index för ankomstlista*/
+SHOW INDEX FROM Booking;
+
 /*Skapa användare och tilldela rättigheter. Skapar användaren Anna som bara kan logga in från den lokala datorn. Lösenordet är 'carlson'
 Ger Anna rätt att: Läsa (SELECT), Lägga till (INSERT), Ändra (UPDATE), Ta bort (DELETE) i
 alla tabeller i databasen CarlsonHotel
@@ -286,5 +273,3 @@ Ger Anna rätt att köra lagrade procedurer och funktioner i databasen.*/
 CREATE USER 'Anna'@'localhost' IDENTIFIED BY 'carlson';
 GRANT SELECT, INSERT, UPDATE, DELETE ON CarlsonHotel.* TO 'Anna'@'localhost';
 GRANT EXECUTE ON CarlsonHotel.* TO 'Anna'@'localhost';
-
-
