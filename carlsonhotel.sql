@@ -1,3 +1,4 @@
+/*Databasen är skapad av Henrik Karlsson och Mattias Karlsson*/
 /*Skapar databasen CarlsonHotel*/
 CREATE DATABASE CarlsonHotel;
 USE CarlsonHotel;
@@ -98,10 +99,10 @@ INSERT INTO Guest (FirstName, LastName, Phone, Email) VALUES
 
 /*Infogar data i tabellen RoomType*/
 INSERT INTO RoomType (RoomName, Price) VALUES
-	('Enkelrum', 990),
-    ('Dubbelrum', 1590),
-    ('Deluxe Dubbelrum', 1995),
-    ('Premium Deluxe', 2990);
+('Enkelrum', 990),
+('Dubbelrum', 1590),
+('Deluxe Dubbelrum', 1995),
+('Premium Deluxe', 2990);
     
 /*Infogar data i tabellen Room*/
 INSERT INTO Room (RoomTypeID, RoomNumber) VALUES -- RoomStatus behöver ingen data då det är satt till default
@@ -116,20 +117,20 @@ INSERT INTO Room (RoomTypeID, RoomNumber) VALUES -- RoomStatus behöver ingen da
 
 /*Infogar data i tabellen Booking*/
 INSERT INTO Booking (GuestID, RoomID, CheckinDate, CheckoutDate) VALUES
-	(1,1,'2025-03-24','2025-03-25'), -- RoomID 1 är enkelrum med rumsnummer 101
-	(2,7,'2025-03-25','2025-03-28'), -- RoomID 7 är Premium Deluxe med rumsnummer 401
-	(3,5,'2025-07-14','2025-07-16'), -- RoomID 5 är Deluxe DUbbelrum med rumsnummer 301
-	(4,3,'2025-10-07','2025-10-08'), -- RoomID 3 är Dubbelrum med rumsnummer 201
-	(2,4,'2025-10-07','2025-10-08'), -- RoomID 4 är Dubbelrum med rumsnummer 202
-    (1,5,'2025-12-24','2025-12-27');
+(1,1,'2025-03-24','2025-03-25'), -- RoomID 1 är enkelrum med rumsnummer 101
+(2,7,'2025-03-25','2025-03-28'), -- RoomID 7 är Premium Deluxe med rumsnummer 401
+(3,5,'2025-07-14','2025-07-16'), -- RoomID 5 är Deluxe DUbbelrum med rumsnummer 301
+(4,3,'2025-10-07','2025-10-08'), -- RoomID 3 är Dubbelrum med rumsnummer 201
+(2,4,'2025-10-07','2025-10-08'), -- RoomID 4 är Dubbelrum med rumsnummer 202
+ (1,5,'2025-12-24','2025-12-27');
 
     
 /*Infogar betalmetoder i tabellen PayMethod*/
 INSERT INTO PayMethod (MethodName) VALUES
-	('Kontanter'),
-    ('Kortbetalning'),
-    ('Swish'),
-    ('Faktura');
+('Kontanter'),
+('Kortbetalning'),
+('Swish'),
+('Faktura');
     
 /*Infogar data i tabellen Payment*/
 INSERT INTO Payment (BookingID, PayMethodID, PaymentDate, Amount, PaymentStatus) VALUES
@@ -142,14 +143,14 @@ INSERT INTO Payment (BookingID, PayMethodID, PaymentDate, Amount, PaymentStatus)
 	
 /*Infogar data i tabellen Service. Produkterna i hotellets minibar*/
 INSERT INTO Service (ServiceName, Price) VALUES
-	('Chips', 39),
-    ('Carlsberg', 69),
-    ('Jordnötter', 45);
+('Chips', 39),
+('Carlsberg', 69),
+('Jordnötter', 45);
     
 /*Infogar data i tabellen BookingService*/
-	INSERT INTO BookingService (BookingID, ServiceID, Quantity) VALUES
-		(1, 1, 1),
-        (1, 2, 2);
+INSERT INTO BookingService (BookingID, ServiceID, Quantity) VALUES
+(1, 1, 1),
+(1, 2, 2);
         
 /*Innerjoin för att se information om kunder och bokningsdetaljer*/      
 SELECT
@@ -192,8 +193,8 @@ CREATE TRIGGER trg_bookinglog_insert
 AFTER INSERT ON Booking
 FOR EACH ROW
 BEGIN
-    INSERT INTO BookingLog (BookingID, Action)
-    VALUES (NEW.BookingID, 'NEW');
+INSERT INTO BookingLog (BookingID, Action)
+VALUES (NEW.BookingID, 'NEW');
 END$$
 
 DELIMITER ;
@@ -205,8 +206,8 @@ CREATE TRIGGER trg_bookinglog_update
 AFTER UPDATE ON Booking
 FOR EACH ROW
 BEGIN
-    INSERT INTO BookingLog (BookingID, Action)
-    VALUES (NEW.BookingID, 'UPDATED');
+INSERT INTO BookingLog (BookingID, Action)
+VALUES (NEW.BookingID, 'UPDATED');
 END$$
 
 DELIMITER ;
@@ -214,7 +215,7 @@ DELIMITER ;
 
 /*Lägg till bokning för att testa bokningsloggen*/
 INSERT INTO Booking (GuestID, RoomID, CheckinDate, CheckoutDate) VALUES
-	(3,2,'2025-05-18','2025-05-19'); -- Kund 3 bokar rumsnummer 102
+(3,2,'2025-05-18','2025-05-19'); -- Kund 3 bokar rumsnummer 102
     
 
 /*Ändra en kundbokning för att se ändring i kundlogg*/
@@ -223,7 +224,7 @@ UPDATE Booking
 SET CheckinDate = '2025-05-17' 
 WHERE BookingID = 8;
 
-COMMIT;  -- Spara ändringen permanent. OBS spara endast om ändringen är korrekt. Kan inte ångra om Comittat
+COMMIT;  -- Spara ändringen permanent.
 
 ROLLBACK;  -- Ångra ändringen.
 
