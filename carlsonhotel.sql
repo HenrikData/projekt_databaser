@@ -269,7 +269,7 @@ SHOW INDEX FROM Booking;
 /*Skapa användare och tilldela rättigheter. Skapar användaren Anna som bara kan logga in från den lokala datorn. Lösenordet är 'carlson'
 Ger Anna rätt att: Läsa (SELECT), Lägga till (INSERT), Ändra (UPDATE), Ta bort (DELETE) i
 alla tabeller i databasen CarlsonHotel
-Ger Anna rätt att köra lagrade procedurer och funktioner i databasen.*/
+(EXECUTE) Anna rätt att köra lagrade procedurer och funktioner i databasen.*/
 CREATE USER 'Anna'@'localhost' IDENTIFIED BY 'carlson';
 GRANT SELECT, INSERT, UPDATE, DELETE ON CarlsonHotel.* TO 'Anna'@'localhost';
 GRANT EXECUTE ON CarlsonHotel.* TO 'Anna'@'localhost';
